@@ -15,7 +15,7 @@ class PropertyController extends AbstractController
 
         return $this->render('property/index.html.twig', [
             'controller_name' => 'PropertyController',
-            'property' => $property->findAll(),
+            'properties' => $property->findAll(),
             'breadcrumb_title' => 'Property',
         ]);
     }
