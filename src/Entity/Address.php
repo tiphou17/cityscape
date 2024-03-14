@@ -31,13 +31,12 @@ class Address
     #[ORM\Column]
     private ?int $add_zip = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?property $add_prop = null;
+    // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    // #[ORM\JoinColumn(nullable: false)]
+    // private ?property $add_prop = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?country $add_country = null;
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
 
     public function getId(): ?int
     {
@@ -116,26 +115,27 @@ class Address
         return $this;
     }
 
-    public function getAddProp(): ?property
+    // public function getAddProp(): ?Property
+    // {
+    //     return $this->add_prop;
+    // }
+
+    // public function setAddProp(Property $add_prop): static
+    // {
+    //     $this->add_prop = $add_prop;
+
+    //     return $this;
+    // }
+
+
+    public function getCountry(): ?string
     {
-        return $this->add_prop;
+        return $this->country;
     }
 
-    public function setAddProp(property $add_prop): static
+    public function setCountry(string $country): static
     {
-        $this->add_prop = $add_prop;
-
-        return $this;
-    }
-
-    public function getAddCountry(): ?country
-    {
-        return $this->add_country;
-    }
-
-    public function setAddCountry(?country $add_country): static
-    {
-        $this->add_country = $add_country;
+        $this->country = $country;
 
         return $this;
     }

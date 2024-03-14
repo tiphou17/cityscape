@@ -1,0 +1,13 @@
+{% if ea.crud.currentAction == 'detail' %}
+    <ul class="list-group">
+        {% for picture in field.value %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span > Mis à jour : {{ picture.updatedAt|date('d-m-Y h:i:sa')  }} </span>
+            <span class="badge badge-primary"> </span>
+            <img src="{{ asset('img/' ~ picture.attachment) }}" alt="">  </span>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <span class="badge badge-secondary">{{ field.value|length}}</span>
+{% endif %}

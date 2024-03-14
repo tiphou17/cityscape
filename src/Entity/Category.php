@@ -19,20 +19,27 @@ class Category
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $slog = null;
+    private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $metaTitle = null;
+    private ?string $MetaTitle = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $metaDescription = null;
+    private ?string $MetaDescription = null;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    private ?self $parent = null;
 
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $categories;
 
+    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'category')]
+    private Collection $properties;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->properties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,44 +59,56 @@ class Category
         return $this;
     }
 
-    public function getSlog(): ?string
+    public function getSlug(): ?string
     {
-        return $this->slog;
+        return $this->slug;
     }
 
-    public function setSlog(string $slog): static
+    public function setSlug(string $slug): static
     {
-        $this->slog = $slog;
+        $this->slug = $slug;
 
         return $this;
     }
 
     public function getMetaTitle(): ?string
     {
-        return $this->metaTitle;
+        return $this->MetaTitle;
     }
 
-    public function setMetaTitle(string $metaTitle): static
+    public function setMetaTitle(string $MetaTitle): static
     {
-        $this->metaTitle = $metaTitle;
+        $this->MetaTitle = $MetaTitle;
 
         return $this;
     }
 
     public function getMetaDescription(): ?string
     {
-        return $this->metaDescription;
+        return $this->MetaDescription;
     }
 
-    public function setMetaDescription(string $metaDescription): static
+    public function setMetaDescription(string $MetaDescription): static
     {
-        $this->metaDescription = $metaDescription;
+        $this->MetaDescription = $MetaDescription;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): static
+    {
+        $this->parent = $parent;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Category>
+     * @return Collection<int, self>
      */
     public function getCategories(): Collection
     {
@@ -112,6 +131,36 @@ class Category
             // set the owning side to null (unless already changed)
             if ($category->getParent() === $this) {
                 $category->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Property>
+     */
+    public function getProperties(): Collection
+    {
+        return $this->properties;
+    }
+
+    public function addProperty(Property $property): static
+    {
+        if (!$this->properties->contains($property)) {
+            $this->properties->add($property);
+            $property->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProperty(Property $property): static
+    {
+        if ($this->properties->removeElement($property)) {
+            // set the owning side to null (unless already changed)
+            if ($property->getCategory() === $this) {
+                $property->setCategory(null);
             }
         }
 
