@@ -19,7 +19,7 @@ class PropertyFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        for ($ii = 1; $ii < 5; $ii++) {
+        for ($ii = 1; $ii < 500; $ii++) {
 
             $property = new Property();
             $property->setPropHousingType($faker->randomElement(['Houses', 'Apartments', 'Office', 'Villa']));
@@ -30,18 +30,21 @@ class PropertyFixtures extends Fixture
             $property->setPropNbBaths($faker->numberBetween(0, 10));
             $property->setPropNbSpaces($faker->numberBetween(0, 10));
             $property->setPropFurnished($faker->numberBetween(0, 1));
+            $property->setSlug($faker->slug);
+            $property->setAdress($faker->streetAddress);
+            $property->setTitle($faker->title);
             $property->setCategory($this->getReference('category_' . rand(1, 2)));
             $manager->persist($property);
 
-            for ($i = 0; $i < 2; $i++) {
+            for ($i = 0; $i < 1; $i++) {
 
-                $url = 'https://picsum.photos/1290/584';
+                $url = 'https://loremflickr.com/905/584/house';
                 $imagename = rand(1, 1000) . '.jpg';
-                $img = 'C:\laragon\www\symfony\cityscape\cityscape\cityscape\public\img\img' . $imagename;
+                $img = 'C:\laragon\www\symfony\cityscape\cityscape\cityscape\public\assets\images\property/' . $imagename;
                 file_put_contents($img, file_get_contents($url));
 
                 $pict = new Picture();
-                $pict->setImageName($imagename);
+                $pict->setAttachment($imagename);
                 $pict->setProperty($property);
 
                 $manager->persist($pict);

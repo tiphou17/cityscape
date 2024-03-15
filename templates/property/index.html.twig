@@ -93,20 +93,19 @@
 					</div>
 				</div>
 			</div>
-			{{dump(properties)}}
 			<div class="list-grid-item-wrapper show-two-item row gy-4">
 				{% for property in properties %}
 					<div class="col-lg-4 col-sm-6">
 						<div class="property-item style-two">
 							<div class="property-item__thumb">
-								<a href="{{ path('app_property_details') }}" class="link">
+								<a href="{{ path('app_property_details', {'slug': property.slug}) }}" class="link">
 									<img src="{{ asset('assets/images/thumbs/property-7.png') }}" alt="" class="cover-img">
 								</a>
 							</div>
 							<div class="property-item__content">
 								<h6 class="property-item__title">
-									<a href="{{ path('app_property_details') }}" class="link">
-										{{ property.getPropHousingType() }}
+									<a href="{{ path('app_property_details', {'slug': property.slug}) }}" class="link">
+										{{ property.propHousingType }}
 									</a>
 								</h6>
 								<ul class="amenities-list flx-align">
@@ -114,19 +113,19 @@
 										<span class="icon text-gradient">
 											<i class="fas fa-bed"></i>
 										</span>
-										<span class="text">{{ property.getPropNbBaths() }}
+										<span class="text">{{ property.propNbBeds }}
 											Beds</span>
 									</li>
 									<li class="amenities-list__item flx-align">
 										<span class="icon text-gradient">
 											<i class="fas fa-bath"></i>
 										</span>
-										<span class="text">{{ property.getPropNbBaths() }}
+										<span class="text">{{ property.propNbBaths }}
 											Baths</span>
 									</li>
 								</ul>
 								<h6 class="property-item__price">
-									{{ property.getPropPrice()|format_currency('EUR') }}
+									{{ property.propPrice|format_currency('EUR') }}
 
 									<span class="day">/per day</span>
 								</h6>
@@ -136,7 +135,7 @@
 									</span>
 									66 Broklyant, New York America
 								</p>
-								<a href="{{ path('app_property_details') }}" class="simple-btn text-gradient fw-semibold font-14">Book Now
+								<a href="{{ path('app_property_details', {'slug': property.slug}) }}" class="simple-btn text-gradient fw-semibold font-14">Book Now
 									<span class="icon-right">
 										<i class="fas fa-arrow-right"></i>
 									</span>

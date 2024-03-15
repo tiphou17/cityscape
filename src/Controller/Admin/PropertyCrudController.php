@@ -51,13 +51,13 @@ class PropertyCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IntegerField::new('prop_nb_beds'),
-            IntegerField::new('prop_nb_baths'),
-            IntegerField::new('prop_nb_spaces'),
-            IntegerField::new('prop_nb_rooms'),
-            IntegerField::new('prop_sqm'),
-            BooleanField::new('prop_furnished'),
-            ChoiceField::new('prop_housing_type')->setChoices([
+            IntegerField::new('propNbBeds'),
+            IntegerField::new('propNbBaths'),
+            IntegerField::new('propNbSpaces'),
+            IntegerField::new('propNbRooms'),
+            IntegerField::new('propSqm'),
+            BooleanField::new('propFurnished'),
+            ChoiceField::new('propHousingType')->setChoices([
                 "Maison" => "Houses",
                 "Appartement" => "Apartments",
                 "Bureau" => "Office",
@@ -69,7 +69,7 @@ class PropertyCrudController extends AbstractCrudController
             // ->allowAdd()
             // ->allowDelete()
             // ->setEntryType(CollectionType::class),
-            MoneyField::new('prop_price')->setCurrency('EUR'),
+            MoneyField::new('propPrice')->setCurrency('EUR'),
             ArrayField::new('feature'),
 
 
@@ -80,18 +80,18 @@ class PropertyCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(ChoiceFilter::new("prop_housing_type", "Type de propriété")->setChoices([
+            ->add(ChoiceFilter::new("propHousingType", "Type de propriété")->setChoices([
                 "Maison" => "Houses",
                 "Appartement" => "Apartments",
                 "Bureau" => "Office",
                 "Villa" => "Villa"
             ]))
-            ->add(NumericFilter::new("prop_nb_rooms", "Nombre de chambres"))
-            ->add(NumericFilter::new("prop_sqm", "Nombre de mètres carrés"))
-            ->add(NumericFilter::new("prop_price", "Prix"))
-            ->add(NumericFilter::new("prop_nb_beds", "Nombre de baignoires"))
-            ->add(NumericFilter::new("prop_nb_spaces", "Nombre de places de parking"))
-            ->add(BooleanFilter::new("prop_furnished", "Meublé ou non ?"))
+            ->add(NumericFilter::new("propNbRooms", "Nombre de chambres"))
+            ->add(NumericFilter::new("propSqm", "Nombre de mètres carrés"))
+            ->add(NumericFilter::new("propPrice", "Prix"))
+            ->add(NumericFilter::new("propNbBeds", "Nombre de baignoires"))
+            ->add(NumericFilter::new("propNbSpaces", "Nombre de places de parking"))
+            ->add(BooleanFilter::new("propFurnished", "Meublé ou non ?"))
         ;
     }
 

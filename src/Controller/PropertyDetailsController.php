@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PropertyDetailsController extends AbstractController
 {
-    #[Route('/propertydetails', name: 'app_property_details')]
+    #[Route('/property/property.slug', name: 'app_property_details')]
     public function index(): Response
     {
         return $this->render('property_details/index.html.twig', [

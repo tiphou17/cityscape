@@ -20,28 +20,28 @@ class Property
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prop_housing_type = null;
+    private ?string $propHousingType = null;
 
     #[ORM\Column]
-    private ?int $prop_nb_rooms = null;
+    private ?int $propNbRooms = null;
 
     #[ORM\Column]
-    private ?int $prop_sqm = null;
+    private ?int $propSqm = null;
 
     #[ORM\Column]
-    private ?int $prop_price = null;
+    private ?int $propPrice = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $prop_nb_beds = null;
+    private ?int $propNbBeds = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $prop_nb_baths = null;
+    private ?int $propNbBaths = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $prop_nb_spaces = null;
+    private ?int $propNbSpaces = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $prop_furnished = null;
+    private ?bool $propFurnished = null;
 
     #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'property', cascade: ['persist', 'remove'])]
     private Collection $picture;
@@ -49,8 +49,17 @@ class Property
     #[ORM\ManyToOne(inversedBy: 'properties')]
     private ?Category $category = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    #[ORM\Column(type: Types::ARRAY , nullable: true)]
     private ?array $feature = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adress = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
     public function __construct()
     {
@@ -58,108 +67,6 @@ class Property
     }
 
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-
-    public function getPropHousingType(): ?string
-    {
-        return $this->prop_housing_type;
-    }
-
-    public function setPropHousingType(string $prop_housing_type): static
-    {
-        $this->prop_housing_type = $prop_housing_type;
-
-        return $this;
-    }
-
-    public function getPropNbRooms(): ?int
-    {
-        return $this->prop_nb_rooms;
-    }
-
-    public function setPropNbRooms(int $prop_nb_rooms): static
-    {
-        $this->prop_nb_rooms = $prop_nb_rooms;
-
-        return $this;
-    }
-
-    public function getPropSqm(): ?int
-    {
-        return $this->prop_sqm;
-    }
-
-    public function setPropSqm(int $prop_sqm): static
-    {
-        $this->prop_sqm = $prop_sqm;
-
-        return $this;
-    }
-
-
-    public function getPropPrice(): ?int
-    {
-        return $this->prop_price;
-    }
-
-    public function setPropPrice(int $prop_price): static
-    {
-        $this->prop_price = $prop_price;
-
-        return $this;
-    }
-
-    public function getPropNbBeds(): ?int
-    {
-        return $this->prop_nb_beds;
-    }
-
-    public function setPropNbBeds(int $prop_nb_beds): static
-    {
-        $this->prop_nb_beds = $prop_nb_beds;
-
-        return $this;
-    }
-
-    public function getPropNbBaths(): ?int
-    {
-        return $this->prop_nb_baths;
-    }
-
-    public function setPropNbBaths(?int $prop_nb_baths): static
-    {
-        $this->prop_nb_baths = $prop_nb_baths;
-
-        return $this;
-    }
-
-    public function getPropNbSpaces(): ?int
-    {
-        return $this->prop_nb_spaces;
-    }
-
-    public function setPropNbSpaces(?int $prop_nb_spaces): static
-    {
-        $this->prop_nb_spaces = $prop_nb_spaces;
-
-        return $this;
-    }
-
-    public function isPropFurnished(): ?bool
-    {
-        return $this->prop_furnished;
-    }
-
-    public function setPropFurnished(?bool $prop_furnished): static
-    {
-        $this->prop_furnished = $prop_furnished;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Picture>
@@ -211,6 +118,143 @@ class Property
     public function setFeature(?array $feature): static
     {
         $this->feature = $feature;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getPropHousingType(): ?string
+    {
+        return $this->propHousingType;
+    }
+
+    public function setPropHousingType(string $propHousingType): static
+    {
+        $this->propHousingType = $propHousingType;
+
+        return $this;
+    }
+
+    public function getPropNbRooms(): ?int
+    {
+        return $this->propNbRooms;
+    }
+
+    public function setPropNbRooms(int $propNbRooms): static
+    {
+        $this->propNbRooms = $propNbRooms;
+
+        return $this;
+    }
+
+    public function getPropSqm(): ?int
+    {
+        return $this->propSqm;
+    }
+
+    public function setPropSqm(int $propSqm): static
+    {
+        $this->propSqm = $propSqm;
+
+        return $this;
+    }
+
+    public function getPropPrice(): ?int
+    {
+        return $this->propPrice;
+    }
+
+    public function setPropPrice(int $propPrice): static
+    {
+        $this->propPrice = $propPrice;
+
+        return $this;
+    }
+
+    public function getPropNbBeds(): ?int
+    {
+        return $this->propNbBeds;
+    }
+
+    public function setPropNbBeds(?int $propNbBeds): static
+    {
+        $this->propNbBeds = $propNbBeds;
+
+        return $this;
+    }
+
+    public function getPropNbBaths(): ?int
+    {
+        return $this->propNbBaths;
+    }
+
+    public function setPropNbBaths(?int $propNbBaths): static
+    {
+        $this->propNbBaths = $propNbBaths;
+
+        return $this;
+    }
+
+    public function getPropNbSpaces(): ?int
+    {
+        return $this->propNbSpaces;
+    }
+
+    public function setPropNbSpaces(?int $propNbSpaces): static
+    {
+        $this->propNbSpaces = $propNbSpaces;
+
+        return $this;
+    }
+
+    public function isPropFurnished(): ?bool
+    {
+        return $this->propFurnished;
+    }
+
+    public function setPropFurnished(?bool $propFurnished): static
+    {
+        $this->propFurnished = $propFurnished;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): static
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }
