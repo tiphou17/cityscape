@@ -21,11 +21,6 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $MetaTitle = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $MetaDescription = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
     private ?self $parent = null;
@@ -71,29 +66,6 @@ class Category
         return $this;
     }
 
-    public function getMetaTitle(): ?string
-    {
-        return $this->MetaTitle;
-    }
-
-    public function setMetaTitle(string $MetaTitle): static
-    {
-        $this->MetaTitle = $MetaTitle;
-
-        return $this;
-    }
-
-    public function getMetaDescription(): ?string
-    {
-        return $this->MetaDescription;
-    }
-
-    public function setMetaDescription(string $MetaDescription): static
-    {
-        $this->MetaDescription = $MetaDescription;
-
-        return $this;
-    }
 
     public function getParent(): ?self
     {

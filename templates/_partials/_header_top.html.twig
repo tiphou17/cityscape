@@ -54,9 +54,12 @@
 								{% for sub in menu.categories %}
 									<li class="nav-submenu__item">
 
-										<a href="/{{ sub.slug }}" class="nav-submenu__link">
+										<a href="{{ path('app_property', {'menu': menu.slug, 'subMenu': sub.slug, 'subId': sub.id }) }}" class="nav-submenu__link">
 											{{sub.name}}
 										</a>
+										{# <a href={{ path('app_' ~ sub.name, {'slug': sub.slug } )}} class="nav-submenu__link">
+																																																																							{{ sub.name }}
+																																																																						</a> #}
 
 									</li>
 								{% endfor %}
@@ -81,7 +84,7 @@
 				<path d="M10.0078 2.29297H30.0078" stroke="#181616" stroke-width="3"/>
 			</svg>
 		</button>
-		<a href="{{ path('app_property_details') }}" class="btn btn-outline-light d-lg-block d-none">Sell Property
+		<a href="#" class="btn btn-outline-light d-lg-block d-none">Sell Property
 			<span class="icon-right text-gradient icon">
 				<i class="fas fa-arrow-right"></i>
 			</span>

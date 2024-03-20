@@ -32,7 +32,9 @@ class PropertyFixtures extends Fixture
             $property->setPropFurnished($faker->numberBetween(0, 1));
             $property->setSlug($faker->slug);
             $property->setAdress($faker->streetAddress);
-            $property->setTitle($faker->title);
+            $property->setTitle($faker->sentence(4, true));
+            $property->setLongitude($faker->longitude);
+            $property->setLatitude($faker->latitude);
             $property->setCategory($this->getReference('category_' . rand(1, 2)));
             $manager->persist($property);
 

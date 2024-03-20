@@ -98,14 +98,17 @@
 					<div class="col-lg-4 col-sm-6">
 						<div class="property-item style-two">
 							<div class="property-item__thumb">
-								<a href="{{ path('app_property_details', {'slug': property.slug}) }}" class="link">
-									<img src="{{ asset('assets/images/thumbs/property-7.png') }}" alt="" class="cover-img">
+								<a href="{{ path('app_property_details', {'id': property.id } ) }}" class=" link">
+									{% set pictures = property.picture|first %}
+									{% if pictures is not null %}
+										<img src="{{ vich_uploader_asset(pictures, 'attachmentFile') }}" alt="" class="cover-img">
+									{% endif %}
 								</a>
 							</div>
 							<div class="property-item__content">
 								<h6 class="property-item__title">
-									<a href="{{ path('app_property_details', {'slug': property.slug}) }}" class="link">
-										{{ property.propHousingType }}
+									<a href="{{ path('app_property_details', {'id': property.id } ) }}" class="link">
+										{{ property.title }}
 									</a>
 								</h6>
 								<ul class="amenities-list flx-align">
@@ -135,7 +138,7 @@
 									</span>
 									66 Broklyant, New York America
 								</p>
-								<a href="{{ path('app_property_details', {'slug': property.slug}) }}" class="simple-btn text-gradient fw-semibold font-14">Book Now
+								<a href="{{ path('app_property_details', {'id': property.id } ) }}" class="simple-btn text-gradient fw-semibold font-14">Book Now
 									<span class="icon-right">
 										<i class="fas fa-arrow-right"></i>
 									</span>
@@ -148,20 +151,9 @@
 			</div>
 		</div>
 		<nav aria-label="Page navigation example">
-			<ul class="pagination common-pagination">
-				<li class="page-item active">
-					<a class="page-link" href="#">1</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">2</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">3</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">4</a>
-				</li>
-			</ul>
+
+			{{ knp_pagination_render(properties) }}
+
 		</nav>
 	</div>
 </section><!-- ======================== Property Section End ============================ -->{% include '_partials/_newsletter.html.twig'%}{% endblock %}
