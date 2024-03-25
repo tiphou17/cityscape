@@ -3,15 +3,19 @@
 namespace App\Controller\Cart;
 
 
+use Stripe\Stripe;
 use App\Repository\PropertyRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CartController extends AbstractController
 {
     #[Route('/cart/add/location/{id}', name: 'app_add_cart')]
+    #[IsGranted('ROLE_USER')]
     public function add(SessionInterface $session, $id)
     {
         $panier = $session->get('panier', []);
@@ -27,6 +31,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/cart/total/show', name: 'app_show_cart')]
+    #[IsGranted('ROLE_USER')]
     public function show(SessionInterface $session, PropertyRepository $propertyRepository): Response
     {
         $panier = $session->get('panier', []);
@@ -55,6 +60,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/cart/delete/location/{id}', name: 'app_delete_cart')]
+    #[IsGranted('ROLE_USER')]
     public function delete(SessionInterface $session, $id)
     {
         $panier = $session->get('panier', []);
@@ -68,6 +74,58 @@ class CartController extends AbstractController
         return $this->redirectToRoute('app_show_cart');
     }
 
-    // #[Route('/cart/total/stripePayment', name: 'app_stripe_payment')]
+    #[Route('/cart/total/stripePayment', name: 'app_stripe_payment')]
+    #[IsGranted('ROLE_USER')]
+    public function payment(SessionInterface $session, PropertyRepository $propertyRepository): Response
+    {
+        $stripeSK = $_ENV['STRIPE_SECRET_KEY'];
+        Stripe::setApiKey($stripeSK);
+
+        $panier = $session->get('panier', []);
+
+        $lineItems = [];
+        foreach ($panier as $id => $quantity) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $propertyRepository->find($id)->getTitle()
+                    ],
+                    'unit_amount' => $propertyRepository->find($id)->getPropPrice() * 100   //stripe fonctionne en centimes
+                ],
+                'quantity' => $quantity,
+            ];
+
+        }
+
+        $session_payment = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card', 'bancontact'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => 'http://127.0.0.1:8000/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $this->generateUrl('cancel_url', [], UrlGeneratorInterface::ABSOLUTE_URL)
+
+        ]);
+
+        return $this->redirect($session_payment->url, 303);
+    }
+
+    #[Route('/success', name: 'app_success')]
+    #[IsGranted('ROLE_USER')]
+    public function success(SessionInterface $session): Response
+    {
+        $session->set('panier', []);
+
+        return $this->render('cart/success.html.twig');
+    }
+
+    #[Route('/cancel', name: 'cancel_url')]
+    #[IsGranted('ROLE_USER')]
+    public function cancel(SessionInterface $session): Response
+    {
+        $session->set('panier', []);
+
+        return $this->render('cart/cancel.html.twig');
+    }
 }
 ;

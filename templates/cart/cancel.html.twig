@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Echec
+{% endblock %}
+
+{% block body %}
+	<p>Try again!</p>
+	<a href="{{ path('app_home') }}" class="simple-btn text-gradient fw-semibold font-14">Home
+
+		<span class="icon-right">
+			<i class="fas fa-arrow-right"></i>
+		</span>
+	</a>
+
+	{% include '_partials/_newsletter.html.twig'%}
+{% endblock %}
