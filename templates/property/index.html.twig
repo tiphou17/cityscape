@@ -130,7 +130,12 @@
 								<h6 class="property-item__price">
 									{{ property.propPrice|format_currency('EUR') }}
 
-									<span class="day">/per day</span>
+									{% if property.category.parent.name =='Location' %}
+										<span class="day">/per month</span>
+									{% elseif property.category.parent.name =='Vente' %}
+										<span class="day">/FA inclus</span>
+									{% endif %}
+
 								</h6>
 								<p class="property-item__location d-flex gap-2">
 									<span class="icon text-gradient">
@@ -138,11 +143,13 @@
 									</span>
 									66 Broklyant, New York America
 								</p>
-								<a href="{{ path('app_property_details', {'id': property.id } ) }}" class="simple-btn text-gradient fw-semibold font-14">Book Now
+								<a href="{{ path('app_add_cart', {'id': property.id } ) }}" class="simple-btn text-gradient fw-semibold font-14">Book Now
+
 									<span class="icon-right">
 										<i class="fas fa-arrow-right"></i>
 									</span>
 								</a>
+
 							</div>
 						</div>
 					</div>
@@ -151,9 +158,10 @@
 			</div>
 		</div>
 		<nav aria-label="Page navigation example">
-
-			{{ knp_pagination_render(properties) }}
-
+			<ul class="pagination common-pagination">
+				<li class="page-item active">{{ knp_pagination_render(properties) }}
+				</li>
+			</ul>
 		</nav>
 	</div>
 </section><!-- ======================== Property Section End ============================ -->{% include '_partials/_newsletter.html.twig'%}{% endblock %}

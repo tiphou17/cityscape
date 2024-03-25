@@ -17,7 +17,11 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\UserAuthenticator
+            # custom_authenticator: App\Security\UserAuthenticator
+            custom_authenticator: App\Security\FacebookAuthenticator
+            form_login:
+                login_path: app_logintest
+                check_path: app_logintest
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -31,6 +35,8 @@ security:
                 lifetime: 604800
                 path: /
                 always_remember_me: true
+
+            # custom_authenticators: App\Security\FacebookAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

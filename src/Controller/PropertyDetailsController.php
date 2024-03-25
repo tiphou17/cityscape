@@ -12,7 +12,7 @@ class PropertyDetailsController extends AbstractController
     #[Route('/property/{id}', name: 'app_property_details')]
     public function index(Property $property): Response
     {
-        dump($property);
+
         return $this->render('property_details/index.html.twig', [
             'property' => $property,
             'controller_name' => 'PropertyDetailsController',
