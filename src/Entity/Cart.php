@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CartRepository;
@@ -10,7 +11,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
-#[Table('location')]
+#[Table('Carts')]
+#[ORM\HasLifecycleCallbacks]
 class Cart
 {
     use TimestampTraits;

@@ -4,13 +4,16 @@ namespace App\Controller\Cart;
 
 
 use Stripe\Stripe;
+use App\Entity\Cart;
+use Doctrine\ORM\EntityManager;
 use App\Repository\PropertyRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CartController extends AbstractController
 {
@@ -112,9 +115,23 @@ class CartController extends AbstractController
 
     #[Route('/success', name: 'app_success')]
     #[IsGranted('ROLE_USER')]
-    public function success(SessionInterface $session): Response
+    public function success(SessionInterface $session, PropertyRepository $propertyRepository, EntityManagerInterface $manager): Response
     {
+        $panier = $session->get('panier', []);
+
+        // je fais une boucle pour insérer la commande en base de donnée
+        foreach ($panier as $id => $quantity) {
+            $item = new Cart();
+            $item->setUser($this->getUser());
+            $item->setStripeId('123456');
+            $item->addProperty($propertyRepository->find($id));
+            $manager->persist($item);
+            $manager->flush();
+
+        }
+        $manager->flush();
         $session->set('panier', []);
+
 
         return $this->render('cart/success.html.twig');
     }
@@ -123,7 +140,7 @@ class CartController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function cancel(SessionInterface $session): Response
     {
-        $session->set('panier', []);
+        $session->get('panier', []);
 
         return $this->render('cart/cancel.html.twig');
     }
